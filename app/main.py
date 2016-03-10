@@ -6,8 +6,9 @@ app = Flask(__name__)
 def index():
     return send_from_directory( 'static' , 'index.html' )
 
-@app.route('/api/beta/dqi', methods=['POST'] )
-def beta_analyze():
+## NEVER USE FOR REAL ANALYSIS, A TOY EXAMPLE
+@app.route('/api/alpha/dqi', methods=['POST'] )
+def alpha_analyze():
     if 'text' not in request.form:
         return jsonify(
                     code = 400 ,
