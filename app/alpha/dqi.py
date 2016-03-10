@@ -1,6 +1,7 @@
 import collections
 import itertools
 import numpy
+import pickle
 
 ## machine learning
 from sklearn import svm, grid_search
@@ -57,14 +58,16 @@ def learn( data, labels ):
     labels = numpy.array( labels )
 
     model.fit( data, labels )
-    print model.score()
 
     pickle.dump( model, open('model.svm', 'w') )
+
+    print model.score( data, labels )
 
 def predict( textline ):
 
     model = pickle.load( open('model.svm') )
-    return model.predict( preprocess( textline ) )
+    data = numpy.array( preprocess( textline ) )
+    return model.predict( [ data ] )
 
 
 if __name__ == "__main__":
