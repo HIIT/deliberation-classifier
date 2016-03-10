@@ -1,3 +1,8 @@
+import collections
+import itertools
+import numpy
+
+## machine learning
 from sklearn import svm, grid_search
 
 ## handling natural language
@@ -22,6 +27,10 @@ def preprocess( text ):
 
     f = {}
 
+    for term in _liwc.terms():
+
+        f['feature_liwc_' + term ] = 0
+
     for k,v in liwcs.items():
         f['feature_liwc_' + k ] = float( v ) / len( tokens )
 
@@ -35,14 +44,17 @@ def preprocess( text ):
 
     return ret
 
-def learn( data ):
+def learn( data, labels ):
 
     estimator = svm.SVC()
     grid = [
-        {'C': range( 0.5 , 10, .5 ) + range(10,50, 1), 'gamma': range( .0001, .1 .0005) , 'kernel': ['rbf', 'sigmoid'] },
+        {'C': numpy.arange( 0.5 , 10, .5 ), 'gamma': numpy.arange( .0001, .1, .0005) , 'kernel': ['rbf', 'sigmoid'] },
     ]
 
     model = grid_search.GridSearchCV( estimator , grid )
+
+    data = numpy.array( data )
+    labels = numpy.array( labels )
 
     model.fit( data, labels )
     print model.score()
@@ -56,4 +68,30 @@ def predict( textline ):
 
 
 if __name__ == "__main__":
-    learn()
+
+    ## teach with real data
+
+    def _int(s):
+        try:
+            int(s)
+            return True
+        except ValueError:
+            return False
+
+
+    import json
+    d = json.load( open( '/Users/mnelimar/projects/2015-dqi/lord/data.json' ) )
+    d = filter( lambda x: x['text'] != '', d )
+    d = filter( lambda x: _int( x['jl'] ), d )
+
+    labels = map( lambda x: int( x['jl'] ), d )
+    data = map( lambda x: preprocess( x['text'] ), d )
+
+    print len( data )
+    print len( labels )
+
+    print 'Start tuning'
+
+    learn( data, labels )
+
+    print 'Done tuning, model saved'
