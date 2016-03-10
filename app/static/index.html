@@ -33,6 +33,10 @@
       </div>
 
       <div>
+        <ul id="examples"></ul>
+      </div>
+
+      <div>
         <button id="demo" class="btn btn-lg btn-success btn-block">Classify</button>
       </div>
 
@@ -63,9 +67,11 @@
 
     <script type="text/javascript">
         $('#demo').click( function() {
-            $.post('/api/alpha/dqi/', { text : $('#demo-text').val() }, function( res ){
-              console.log( res.value );
-              alert( res.value );
+            var text = $('#demo-text').val();
+            $.post('/api/alpha/dqi/', { text : text }, function( res ){
+                console.log("Kissa");
+                var li = $('<li>').html( text + ' &ndash; ' + res.value );
+                $('#examples').append( li );
             } );
         });
     </script>
