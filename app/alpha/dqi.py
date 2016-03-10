@@ -65,7 +65,7 @@ def learn( data, labels ):
 
 def predict( textline ):
 
-    model = pickle.load( open('model.svm') )
+    model = pickle.load( open('alpha/model.svm') )
     data = numpy.array( preprocess( textline ) )
     return model.predict( [ data ] )
 
