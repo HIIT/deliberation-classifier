@@ -4,7 +4,7 @@ import numpy
 import pickle
 
 ## machine learning
-from sklearn import svm, grid_search
+from sklearn import svm, grid_search, cross_validation
 
 ## handling natural language
 from liwc import liwc
@@ -52,16 +52,23 @@ def learn( data, labels ):
         {'C': numpy.arange( 0.5 , 10, .5 ), 'gamma': numpy.arange( .0001, .1, .0005) , 'kernel': ['rbf', 'sigmoid'] },
     ]
 
-    model = grid_search.GridSearchCV( estimator , grid )
+    model = grid_search.GridSearchCV( estimator , grid, cv = 10, verbose = 5 )
 
     data = numpy.array( data )
     labels = numpy.array( labels )
+
+    ## separate train and test
+    data_train, data_test, labels_train, labels_test = cross_validation.train_test_split( data, labels, test_size = .2 )
 
     model.fit( data, labels )
 
     pickle.dump( model, open('model.svm', 'w') )
 
-    print model.score( data, labels )
+    print "Test result"
+    print model.score( data_train, labels_train )
+    print ""
+    print "Test result"
+    print model.score( data_test, labels_test )
 
 def predict( textline ):
 
@@ -87,11 +94,10 @@ if __name__ == "__main__":
     d = filter( lambda x: x['text'] != '', d )
     d = filter( lambda x: _int( x['jl'] ), d )
 
-    labels = map( lambda x: int( x['jl'] ), d )
+    labels = map( lambda x: int( x['jl'] ) >= 2, d )
     data = map( lambda x: preprocess( x['text'] ), d )
 
-    print len( data )
-    print len( labels )
+    print "Data size", len( data )
 
     print 'Start tuning'
 
