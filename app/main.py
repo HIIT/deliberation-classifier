@@ -1,5 +1,14 @@
 from flask import *
 
+try:
+    import git ## for versions
+    repo = git.Repo("../")
+
+    __version = str( repo.head.commit )
+
+except:
+    __version = 'no-version'
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -22,7 +31,7 @@ def alpha_analyze():
 
     jl = int(jl)
 
-    return jsonify( { 'value' : jl } )
+    return jsonify( { 'value' : jl , 'version' : __version } )
 
 @app.route('/api/current/dqi/', methods=['POST'] )
 def current_analysis():
