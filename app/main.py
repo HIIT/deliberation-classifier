@@ -35,8 +35,7 @@ def alpha_analyze():
 
 @app.route('/api/current/dqi/', methods=['POST'] )
 def current_analysis():
-
-    redirect( url_for('.alpha_analyze') )
+    return alpha_analyze()
 
 
 if __name__ == "__main__":
