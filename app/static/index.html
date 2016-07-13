@@ -57,7 +57,7 @@
         <dl>
 
           <dt>I don't want to copy-paste hundreds of messages here. Is there a way to automate analysis?</dt>
-          <dd>Yes. We provide an application programming interface (API), just send a <code>POST</code> requests to /api/curent/dqi with <code>text</code>-parameter for the text you currently use.</dd>
+          <dd>Yes. We provide an application programming interface (API), just send a <code>POST</code> requests to /api/curent/dqi with <code>text</code>-parameter for the text to be analysed.</dd>
 
           <dt>Do you store any data?</dt>
           <dd>No. Data might be stored in some automatically generated log files (removed over time), but we do not intentionally collect it.</dd>
@@ -70,6 +70,8 @@
         <p>
           For more details, contact Matti Nelimarkka (<a href="mailto:matti.nelimarkka@hiit.fi">matti.nelimarkka@hiit.fi</a>).
         </p>
+
+        Version: <span id='version'></span>
 
         <h5>Acknowledgements</h5>
 
@@ -93,6 +95,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
     <script type="text/javascript">
+
+        $(document).ready( function() {
+          $.get('/api/current/version', function( res ) {
+            $('#version').html( res.version );
+          });
+        });
+
         $('#demo').click( function() {
             var text = $('#demo-text').val();
             $.post('/api/current/dqi/', { text : text }, function( res ){

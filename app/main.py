@@ -37,6 +37,11 @@ def alpha_analyze():
 def current_analysis():
     return alpha_analyze()
 
+@app.route('/api/current/version/', methods=['GET'] )
+def current_version():
+
+    return jsonify( {'version' : __version } )
+
 
 if __name__ == "__main__":
     app.run( debug = True )
