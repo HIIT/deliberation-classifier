@@ -19,6 +19,9 @@ def alpha_analyze():
                 ) , 400
 
     jl = dqi.predict( request.form['text'] )[0]
+
+    jl = int(jl)
+
     return jsonify( { 'value' : jl } )
 
 if __name__ == "__main__":
