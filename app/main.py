@@ -24,5 +24,11 @@ def alpha_analyze():
 
     return jsonify( { 'value' : jl } )
 
+@app.route('/api/current/dqi/', methods=['POST'] )
+def current_analysis():
+
+    redirect( url_for('.alpha_analyze') )
+
+
 if __name__ == "__main__":
     app.run( debug = True )

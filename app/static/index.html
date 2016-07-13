@@ -82,7 +82,7 @@
     <script type="text/javascript">
         $('#demo').click( function() {
             var text = $('#demo-text').val();
-            $.post('/api/alpha/dqi/', { text : text }, function( res ){
+            $.post('/api/current/dqi/', { text : text }, function( res ){
 
                 var row = $('<tr>');
 
