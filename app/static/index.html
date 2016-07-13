@@ -16,48 +16,62 @@
   <body>
     <div class="container">
 
-    <h3>Classify text using Discourse Quality Index</h3>
+      <div class="row">
 
-    <p>
-      Steenbergen et al. (2003) presented the Discourse Quality Index (DQI) as a tool to quantify deliberation in parliamentary speech.
-      Using recent developments of machine learning Nelimarkka (in press) presented an automated toolset to conduct classifications automatically using DQI framework.
-      This tool allows you to apply this classification automatically.
-    </p>
+        <h3>Classify text using Discourse Quality Index</h3>
 
-    <div>
-
-      <div>
         <p>
-          <textarea id="demo-text"></textarea>
+          Steenbergen et al. (2003) presented the Discourse Quality Index (DQI) as a tool to quantify deliberation in parliamentary speech.
+          Using recent developments of machine learning Nelimarkka (in press) presented an automated toolset to conduct classifications automatically using DQI framework.
+          This tool allows you to apply this classification automatically.
         </p>
-      </div>
 
-      <div>
-        <ul id="examples"></ul>
-      </div>
 
-      <div>
+        <textarea id="demo-text" widht="100%"></textarea>
+
         <button id="demo" class="btn btn-lg btn-success btn-block">Classify</button>
+
+    </div>
+
+    <div class="row">
+
+      <p></p> <!-- space between button and this -->
+
+      <div>
+        <table id='examples' class='table'>
+
+          <tr class="info">
+            <th>Text</th>
+            <th>Justification level</th>
+          </tr>
+
+        </table>
       </div>
 
     </div>
 
-    <h3>FAQ</h3>
+      <div class="row">
 
-    <p>
-      For more details, just contact Matti Nelimarkka (<a href="mailto:matti.nelimarkka@hiit.fi">matti.nelimarkka@hiit.fi</a>) for details.
-    </p>
+        <h3>FAQ</h3>
 
-    <h5>Acknowledgements</h5>
+        <p>
+          For more details, contact Matti Nelimarkka (<a href="mailto:matti.nelimarkka@hiit.fi">matti.nelimarkka@hiit.fi</a>).
+        </p>
 
-    <p>
-      We gratefully thank ... for access to data for building this work.
-    </p>
+        <h5>Acknowledgements</h5>
 
-    <p>
-      We thank <a href="http://www.koneensaatio.fi/en/">Kone Foundation</a> for funding this work.
-      This work was done in <a href="http://www.hiit.fi/">Helsinki Institute for Information Technology HIIT</a> at <a href="http://www.aalto.fi">Aalto University</a> and <a href="http://www.helsinki.fi/">University of Helsinki</a>.
-    </p>
+        <p>
+          We gratefully thank ... for access to data for building this work.
+        </p>
+
+        <p>
+          We thank <a href="http://www.koneensaatio.fi/en/">Kone Foundation</a> for funding this work.
+          This work was done in <a href="http://www.hiit.fi/">Helsinki Institute for Information Technology HIIT</a> at <a href="http://www.aalto.fi">Aalto University</a> and <a href="http://www.helsinki.fi/">University of Helsinki</a>.
+        </p>
+
+      </div>
+
+  </div>
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -69,9 +83,18 @@
         $('#demo').click( function() {
             var text = $('#demo-text').val();
             $.post('/api/alpha/dqi/', { text : text }, function( res ){
-                console.log("Kissa");
-                var li = $('<li>').html( text + ' &ndash; ' + res.value );
-                $('#examples').append( li );
+
+                var row = $('<tr>');
+
+                var c = null;
+
+                c = $('<td>', { html : text } );
+                row.append(c)
+
+                c = $('<td>', { html : res.value } );
+                row.append(c)
+
+                $('#examples').append( row );
             } );
         });
     </script>
